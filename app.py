@@ -109,21 +109,41 @@ def challenges():
 def leaderboard():
     return render_template('leaderboard.html')
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
     user_id = session.get('user_id')
-    if not user_id:
-        return redirect(url_for('login'))
-
     conn = get_db_connection()
-    user = conn.execute('SELECT name, email FROM users WHERE id = ?', (user_id,)).fetchone()
+
+    if request.method == 'POST':
+        new_name = request.form['name']
+        new_email = request.form['email']
+        new_roll = request.form['rollno']
+        new_college = request.form['college']
+        new_state = request.form['state']
+        new_phone = request.form['phone']
+
+        conn.execute('''
+            UPDATE users 
+            SET name = ?, email = ?, rollno = ?, college = ?, state = ?, phone = ?
+            WHERE id = ?
+        ''', (new_name, new_email, new_roll, new_college, new_state, new_phone, user_id))
+        conn.commit()
+
+    user = conn.execute('SELECT name, email, rollno, college, state, phone FROM users WHERE id = ?', (user_id,)).fetchone()
     conn.close()
 
     if user:
-        return render_template('profile.html', name=user['name'], email=user['email'])
+        return render_template('profile.html',
+            name=user['name'],
+            email=user['email'],
+            rollno=user['rollno'] or '',
+            college=user['college'] or '',
+            state=user['state'] or '',
+            phone=user['phone'] or ''
+        )
     else:
         return "User not found", 404
 
