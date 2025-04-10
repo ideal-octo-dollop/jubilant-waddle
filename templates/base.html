@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Bing Chilling{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/home-log.png') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header id="main-header">
+    <div class="container">
+      <div class="logo">
+        <a href="{{ url_for('home') }}"><span>Bing Chilling</span></a>
+      </div>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}">Home</a></li>
+          <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ url_for('learning') }}">Learning</a></li>
+          <li><a href="{{ url_for('challenges') }}">Challenges</a></li>
+          <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+        </ul>
+      </nav>
+      <div class="auth-buttons">
+        <a href="{{ url_for('login') }}" class="btn btn-outline">Log in</a>
+      </div>
+      <div class="mobile-menu-btn">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+  </header>
+
+  {% block content %}
+  <!-- Page-specific content will go here -->
+  {% endblock %}
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
