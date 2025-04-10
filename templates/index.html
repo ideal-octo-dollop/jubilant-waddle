@@ -3,6 +3,18 @@
 {% block title %}Home | Bing Chilling{% endblock %}
 
 {% block content %}
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
 <section class="hero">
   <div class="container">
     <div class="hero-content">
@@ -108,4 +120,15 @@
     </div>
   </div>
 </footer>
+<script>
+  setTimeout(() => {
+    const flashMessages = document.querySelectorAll('.flash');
+    flashMessages.forEach(msg => {
+      msg.style.opacity = '0';
+      msg.style.transition = 'opacity 0.5s ease-out';
+      setTimeout(() => msg.remove(), 500); // remove after fading
+    });
+  }, 3000); // 3 seconds
+</script>
+
 {% endblock %}

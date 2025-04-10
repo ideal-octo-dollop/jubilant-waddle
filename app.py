@@ -29,7 +29,7 @@ def login():
                 session['user_id'] = user['id']
                 session['username'] = user['name']
                 flash('You have been logged in, young padawan!', 'success')
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('home'))
             else:
                 flash('Incorrect password.', 'danger')
         else:
@@ -91,6 +91,12 @@ def challenges():
 @app.route('/leaderboard')
 def leaderboard():
     return render_template('leaderboard.html')
+@app.route('/logout')
+def logout():
+    session.clear()
+    flash('You have been logged out. Farewell, warrior!', 'info')
+    return redirect(url_for('login'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

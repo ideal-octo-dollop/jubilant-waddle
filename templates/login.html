@@ -1,5 +1,18 @@
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -65,7 +78,17 @@
       </div>
     </div>
   </main>
-
+  <script>
+    setTimeout(() => {
+      const flashMessages = document.querySelectorAll('.flash');
+      flashMessages.forEach(msg => {
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity 0.5s ease-out';
+        setTimeout(() => msg.remove(), 500); // remove after fading
+      });
+    }, 3000); // 3 seconds
+  </script>
+  
 
 </body>
 </html>
