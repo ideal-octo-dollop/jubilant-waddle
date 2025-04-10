@@ -1,3 +1,4 @@
+from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash  # Include check_password_hash
@@ -10,7 +11,17 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if 'user_id' not in session:
+            flash('Please log in to access this page.', 'warning')
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated_function
+
 @app.route('/')
+@login_required
 def home():
     return render_template('index.html')
 
@@ -22,7 +33,7 @@ def login():
 
         conn = get_db_connection()
         user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
-        conn.close()
+        
 
         if user:
             if check_password_hash(user['password'], password):
@@ -40,6 +51,7 @@ def login():
 
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     if 'username' in session:
         return render_template('dashboard.html', username=session['username'])
@@ -71,7 +83,7 @@ def register():
             c.execute("INSERT INTO users (name, email, phone, college, state, rollno, password) VALUES (?, ?, ?, ?, ?, ?, ?)",
                       (name, email, phone, college, state, rollno, hashed_password))
             conn.commit()
-            conn.close()
+            
             flash("Registration successful!", "success")
             return redirect(url_for('dashboard'))
         except sqlite3.IntegrityError:
@@ -81,16 +93,20 @@ def register():
     return render_template('register.html')
 
 @app.route('/learning')
+@login_required
 def learning():
     return render_template('learning.html')
 
 @app.route('/challenges')
+@login_required
 def challenges():
     return render_template('challenges.html')
 
 @app.route('/leaderboard')
+@login_required
 def leaderboard():
     return render_template('leaderboard.html')
+
 @app.route('/logout')
 def logout():
     session.clear()

@@ -1,10 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Challenges - LearnVerse</title>
-  <link rel="stylesheet" href="../style/styles.css">
+{% extends 'base.html' %}
+
+{% block title %}Home | Bing Chilling{% endblock %}
+
+{% block content %}
+
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-javascript.js"></script>
@@ -13,28 +14,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script>
 </head>
 <body>
-  <header id="main-header">
-    <div class="container">
-      <div class="logo">
-        <a href="index.html"><span>Bing Chilling</span></a>
-      </div>
-      <nav>
-        <ul class="nav-links">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
-          <li><a href="learning.html">Learning</a></li>
-          <li><a href="challenges.html" class="active">Challenges</a></li>
-          <li><a href="leaderboard.html">Leaderboard</a></li>
-        </ul>
-      </nav>
-      <div class="auth-buttons">
-        <a href="login.html" class="btn btn-outline">Log in</a>
-      </div>
-      <div class="mobile-menu-btn">
-        <i class="fas fa-bars"></i>
-      </div>
-    </div>
-  </header>
+ 
 
   <section class="page-header">
     <div class="container">
@@ -343,7 +323,5 @@
     </div>
   </footer>
 
-  <script src="../script/script.js"></script>
-  <script src="../script/compiler.js"></script>
-</body>
-</html>
+
+  {% endblock %}

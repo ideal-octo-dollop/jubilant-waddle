@@ -3,6 +3,9 @@
 {% block title %}Home | Bing Chilling{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard-style.css') }}">
+  
   <div class="overlay" id="overlay"></div>
 
   <div class="profile-card-popup" id="profile-card-popup">
