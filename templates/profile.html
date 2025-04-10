@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .profile-container {
+      max-width: 600px;
+      margin: 80px auto;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid #4CAF50;
+    }
+    .profile-name {
+      font-size: 24px;
+      margin: 10px 0;
+    }
+    .profile-email {
+      color: #777;
+    }
+    .logout-button {
+      margin-top: 30px;
+      padding: 10px 20px;
+      background: #e53935;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .logout-button:hover {
+      background: #c62828;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-container">
+    <img src="{{ url_for('static', filename='images/default-avatar.png') }}" alt="Profile Picture" class="profile-pic">
+    <div class="profile-name">{{ name or "John Doe" }}</div>
+    <div class="profile-email">{{ email or "johndoe@example.com" }}</div>
+
+    <form action="{{ url_for('logout') }}" method="get">
+      <button class="logout-button">Logout</button>
+    </form>
+  </div>
+
+</body>
+</html>

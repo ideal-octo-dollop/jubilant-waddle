@@ -40,6 +40,8 @@ def login():
                 session['user_id'] = user['id']
                 session['username'] = user['name']
                 flash('You have been logged in, young padawan!', 'success')
+                session['logged_in'] = True
+                session['user_id'] = user['id']
                 return redirect(url_for('home'))
             else:
                 flash('Incorrect password.', 'danger')
@@ -106,6 +108,25 @@ def challenges():
 @login_required
 def leaderboard():
     return render_template('leaderboard.html')
+
+@app.route('/profile')
+def profile():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    user_id = session.get('user_id')
+    if not user_id:
+        return redirect(url_for('login'))
+
+    conn = get_db_connection()
+    user = conn.execute('SELECT name, email FROM users WHERE id = ?', (user_id,)).fetchone()
+    conn.close()
+
+    if user:
+        return render_template('profile.html', name=user['name'], email=user['email'])
+    else:
+        return "User not found", 404
+
 
 @app.route('/logout')
 def logout():

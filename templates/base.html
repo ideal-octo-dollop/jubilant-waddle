@@ -23,11 +23,16 @@
           <li><a href="{{ url_for('learning') }}">Learning</a></li>
           <li><a href="{{ url_for('challenges') }}">Challenges</a></li>
           <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+          {% if session.get('logged_in') %}
+          <li><a href="{{ url_for('profile') }}">Profile</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        {% else %}
+          <li><a href="{{ url_for('login') }}">Login</a></li>
+          <li><a href="{{ url_for('register') }}">Register</a></li>
+        {% endif %}
         </ul>
       </nav>
-      <div class="auth-buttons">
-        <a href="{{ url_for('login') }}" class="btn btn-outline">Log in</a>
-      </div>
+
       <div class="mobile-menu-btn">
         <i class="fas fa-bars"></i>
       </div>
