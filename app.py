@@ -1,7 +1,8 @@
 from functools import wraps
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash  # Include check_password_hash
+import requests 
 
 app = Flask(__name__)
 app.secret_key = 'your_top_secret_key'  # Needed for sessions and flash messages
@@ -153,6 +154,30 @@ def logout():
     session.clear()
     flash('You have been logged out. Farewell, warrior!', 'info')
     return redirect(url_for('login'))
+
+
+@app.route("/chatbot")
+def chatbot_ui():
+    return render_template("chatbot.html")
+
+@app.route("/ask", methods=["POST"])
+def ask_phi():
+    user_input = request.json.get("prompt", "")
+    payload = {
+        "model": "phi",
+        "prompt": user_input,
+        "stream": False
+    }
+
+    response = requests.post("http://localhost:11434/api/generate", json=payload)
+
+    if response.status_code == 200:
+        data = response.json()
+        return jsonify({"response": data.get("response", "")})
+    else:
+        return jsonify({"error": "Ollama API failed"}), 500
+
+
 
 
 if __name__ == '__main__':
