@@ -164,7 +164,7 @@ def chatbot_ui():
 def ask_phi():
     user_input = request.json.get("prompt", "")
     payload = {
-        "model": "phi",
+        "model": "llama3",
         "prompt": user_input,
         "stream": False
     }
