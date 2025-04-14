@@ -3,325 +3,218 @@
 {% block title %}Home | Bing Chilling{% endblock %}
 
 {% block content %}
-
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/ace.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-javascript.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-python.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/mode-java.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.23.0/theme-monokai.js"></script>
-</head>
-<body>
- 
-
-  <section class="page-header">
-    <div class="container">
-      <h1>Challenges</h1>
-      <p>Test your skills with our curated challenges and coding problems</p>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
     </div>
-  </section>
+  {% endif %}
+{% endwith %}
 
-  <section class="challenges-section">
-    <div class="container">
-      <div class="challenge-filters">
-        <div class="filter-group">
-          <label for="category-filter">Category:</label>
-          <select id="category-filter">
-            <option value="all">All Categories</option>
-            <option value="algorithms">Algorithms</option>
-            <option value="data-structures">Data Structures</option>
-            <option value="web-dev">Web Development</option>
-            <option value="databases">Databases</option>
-            <option value="system-design">System Design</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="difficulty-filter">Difficulty:</label>
-          <select id="difficulty-filter">
-            <option value="all">All Levels</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
-        <div class="filter-group search">
-          <input type="text" id="search-challenges" placeholder="Search challenges...">
-          <button><i class="fas fa-search"></i></button>
-        </div>
-      </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='game_style.css') }}">
+<main class="container">
+  <a href="{{ url_for('game') }}" class="back-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"></path><path d="M19 12H5"></path></svg>
+    Back to Categories
+  </a>
 
-      <div class="challenges-list">
-        <div class="challenge-card" data-category="algorithms" data-difficulty="easy">
-          <div class="challenge-header">
-            <div class="challenge-badges">
-              <span class="badge badge-difficulty badge-easy">Easy</span>
-              <span class="badge badge-points">100 Points</span>
-            </div>
-            <h3>Array Sum Finder</h3>
-            <p class="challenge-category">Algorithms</p>
-          </div>
-          <div class="challenge-body">
-            <p>Find two numbers in an array that add up to a target sum.</p>
-            <div class="challenge-meta">
-              <span><i class="fas fa-clock"></i> 30 mins</span>
-              <span><i class="fas fa-code"></i> JavaScript, Python</span>
-            </div>
-          </div>
-          <div class="challenge-footer">
-            <button class="btn btn-primary open-challenge" data-id="1">Start Challenge</button>
-          </div>
-        </div>
-
-        <div class="challenge-card" data-category="data-structures" data-difficulty="medium">
-          <div class="challenge-header">
-            <div class="challenge-badges">
-              <span class="badge badge-difficulty badge-medium">Medium</span>
-              <span class="badge badge-points">200 Points</span>
-            </div>
-            <h3>Binary Tree Traversal</h3>
-            <p class="challenge-category">Data Structures</p>
-          </div>
-          <div class="challenge-body">
-            <p>Implement pre-order, in-order, and post-order traversal for a binary tree.</p>
-            <div class="challenge-meta">
-              <span><i class="fas fa-clock"></i> 45 mins</span>
-              <span><i class="fas fa-code"></i> Java, Python</span>
-            </div>
-          </div>
-          <div class="challenge-footer">
-            <button class="btn btn-primary open-challenge" data-id="2">Start Challenge</button>
-          </div>
-        </div>
-
-        <div class="challenge-card" data-category="web-dev" data-difficulty="medium">
-          <div class="challenge-header">
-            <div class="challenge-badges">
-              <span class="badge badge-difficulty badge-medium">Medium</span>
-              <span class="badge badge-points">150 Points</span>
-            </div>
-            <h3>Responsive Grid Layout</h3>
-            <p class="challenge-category">Web Development</p>
-          </div>
-          <div class="challenge-body">
-            <p>Create a responsive grid layout that adapts to different screen sizes using CSS Grid.</p>
-            <div class="challenge-meta">
-              <span><i class="fas fa-clock"></i> 40 mins</span>
-              <span><i class="fas fa-code"></i> HTML, CSS</span>
-            </div>
-          </div>
-          <div class="challenge-footer">
-            <button class="btn btn-primary open-challenge" data-id="3">Start Challenge</button>
-          </div>
-        </div>
-
-        <div class="challenge-card" data-category="algorithms" data-difficulty="hard">
-          <div class="challenge-header">
-            <div class="challenge-badges">
-              <span class="badge badge-difficulty badge-hard">Hard</span>
-              <span class="badge badge-points">300 Points</span>
-            </div>
-            <h3>Dynamic Programming Challenge</h3>
-            <p class="challenge-category">Algorithms</p>
-          </div>
-          <div class="challenge-body">
-            <p>Solve the knapsack problem using dynamic programming approach.</p>
-            <div class="challenge-meta">
-              <span><i class="fas fa-clock"></i> 60 mins</span>
-              <span><i class="fas fa-code"></i> JavaScript, Python, Java</span>
-            </div>
-          </div>
-          <div class="challenge-footer">
-            <button class="btn btn-primary open-challenge" data-id="4">Start Challenge</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="todays-challenges"style="margin-bottom:45px;">
-        <div class="logo">
-          <span>Today's Challenge</span>
-        </div>
-        <div class="challenges-list">
-          <div class="challenge-card" data-category="algorithms" data-difficulty="easy">
-            <div class="challenge-header">
-              <div class="challenge-badges">
-                <span class="badge badge-difficulty badge-easy">Easy</span>
-                <span class="badge badge-points">100 Points</span>
-              </div>
-              <h3>Palindrome Checker</h3>
-              <p class="challenge-category">Algorithms</p>
-            </div>
-            <div class="challenge-body">
-              <p>Check if a given string is a palindrome.</p>
-              <div class="challenge-meta">
-                <span><i class="fas fa-clock"></i> 20 mins</span>
-                <span><i class="fas fa-code"></i> JavaScript, Python</span>
-              </div>
-            </div>
-            <div class="challenge-footer">
-              <button class="btn btn-primary open-challenge" data-id="5">Start Challenge</button>
-            </div>
-          </div>
-
-          <div class="challenge-card" data-category="web-dev" data-difficulty="medium">
-            <div class="challenge-header">
-              <div class="challenge-badges">
-                <span class="badge badge-difficulty badge-medium">Medium</span>
-                <span class="badge badge-points">150 Points</span>
-              </div>
-              <h3>API Integration</h3>
-              <p class="challenge-category">Web Development</p>
-            </div>
-            <div class="challenge-body">
-              <p>Integrate a public API and display data on a webpage.</p>
-              <div class="challenge-meta">
-                <span><i class="fas fa-clock"></i> 45 mins</span>
-                <span><i class="fas fa-code"></i> JavaScript, HTML</span>
-              </div>
-            </div>
-            <div class="challenge-footer">
-              <button class="btn btn-primary open-challenge" data-id="6">Start Challenge</button>
-            </div>
-          </div>
-
-          <div class="challenge-card" data-category="data-structures" data-difficulty="hard">
-            <div class="challenge-header">
-              <div class="challenge-badges">
-                <span class="badge badge-difficulty badge-hard">Hard</span>
-                <span class="badge badge-points">250 Points</span>
-              </div>
-              <h3>Graph Traversal</h3>
-              <p class="challenge-category">Data Structures</p>
-            </div>
-            <div class="challenge-body">
-              <p>Implement BFS and DFS for a given graph.</p>
-              <div class="challenge-meta">
-                <span><i class="fas fa-clock"></i> 50 mins</span>
-                <span><i class="fas fa-code"></i> Python, Java</span>
-              </div>
-            </div>
-            <div class="challenge-footer">
-              <button class="btn btn-primary open-challenge" data-id="7">Start Challenge</button>
-            </div>
-          </div>
-
-          <div class="challenge-card streak-challenge" data-category="streak" data-difficulty="medium">
-            <div class="challenge-header">
-              <div class="challenge-badges">
-                <span class="badge badge-difficulty badge-medium">Medium</span>
-                <span class="badge badge-points">+50 Bonus Points</span>
-              </div>
-              <h3>Streak Challenge</h3>
-              <p class="challenge-category">Special</p>
-            </div>
-            <div class="challenge-body">
-              <p>Complete 3 challenges in a row to earn bonus points!</p>
-              <div class="challenge-meta">
-                <span><i class="fas fa-clock"></i> Ongoing</span>
-                <span><i class="fas fa-code"></i> Any Language</span>
-              </div>
-            </div>
-            <div class="challenge-footer">
-              <button class="btn btn-primary open-challenge" data-id="8">Start Streak</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
-  <div id="compiler-modal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2 id="challenge-title">Challenge Title</h2>
-        <span class="close-modal">&times;</span>
-      </div>
-      <div class="modal-body">
-        <div class="challenge-description">
-          <h3>Description</h3>
-          <p id="challenge-description">Challenge description goes here...</p>
-          <div class="challenge-examples">
-            <h4>Examples</h4>
-            <pre id="challenge-examples">Input: [...]\nOutput: [...]</pre>
-          </div>
-        </div>
-        <div class="compiler-container">
-          <div class="compiler-header">
-            <div class="language-selector">
-              <label for="language-select">Language:</label>
-              <select id="language-select">
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-              </select>
-            </div>
-            <div class="theme-selector">
-              <label for="theme-select">Theme:</label>
-              <select id="theme-select">
-                <option value="monokai">Monokai</option>
-                <option value="github">GitHub</option>
-                <option value="tomorrow">Tomorrow</option>
-                <option value="kuroir">Kuroir</option>
-              </select>
-            </div>
-          </div>
-          <div id="editor">// Write your code here...</div>
-          <div class="compiler-controls">
-            <button id="run-code" class="btn btn-primary"><i class="fas fa-play"></i> Run Code</button>
-            <button id="submit-code" class="btn btn-success"><i class="fas fa-check"></i> Submit</button>
-            <button id="reset-code" class="btn btn-outline"><i class="fas fa-redo"></i> Reset</button>
-          </div>
-          <div class="output-container">
-            <h4>Output</h4>
-            <pre id="output-area">// Code output will appear here...</pre>
-          </div>
-        </div>
-      </div>
+  <div class="category-header">
+    <div id="category-icon" class="category-icon"></div>
+    <div>
+      <h1 id="category-title"></h1>
+      <p id="category-description"></p>
     </div>
   </div>
 
-  <footer>
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <div class="logo">
-            <span>Bing Chilling</span>
-          </div>
-          <p>Empowering students to enhance their technical skills, communication abilities, and mindset through personalized learning.</p>
-        </div>
-        <div class="footer-section">
-          <h4>Platform</h4>
-          <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="learning.html">Learning</a></li>
-            <li><a href="challenges.html">Challenges</a></li>
-            <li><a href="leaderboard.html">Leaderboard</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-          </ul>
-        </div>
+  <div id="levels-container" class="cards"></div>
+</main>
+
+<div id="toast" class="toast"></div>
+<footer data-aos="fade-up">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <div class="logo"><span>Bing Chilling</span></div>
+        <p>Empowering students to enhance their technical skills, communication abilities, and mindset through personalized learning.</p>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; <span id="current-year"></span> Bing Chillling...!!  All rights reserved.</p>
+      <div class="footer-section">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="dashboard.html">Dashboard</a></li>
+          <li><a href="learning.html">Learning</a></li>
+          <li><a href="challenges.html">Challenges</a></li>
+          <li><a href="leaderboard.html">Leaderboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Cookie Policy</a></li>
+        </ul>
       </div>
     </div>
-  </footer>
+    <div class="footer-bottom">
+      <p>&copy; <span id="current-year"></span> Bing Chillling...!! All rights reserved.</p>
+    </div>
+  </div>
+</footer>
 
+<script>
+// Category data
+const categoryData = {
+  aptitude: {
+    title: "Aptitude Skills",
+    description: "Develop logical reasoning, problem-solving, and mathematical skills through engaging challenges.",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 6H9a2 2 0 0 0-2 2v9"></path><path d="M9 9h9a2 2 0 0 1 2 2v9"></path><path d="m3 17 3 3 3-3"></path><path d="M21 8a9 9 0 0 0-9-9 9 9 0 0 0-6.3 15.4"></path></svg>',
+    color: 'text-game-blue',
+    bgColor: 'bg-game-blue/10',
+    levels: [
+      { title: "Logic Puzzles", description: "Solve basic logic puzzles to train your analytical thinking." },
+      { title: "Pattern Recognition", description: "Identify and complete complex patterns to enhance your abstract thinking." },
+      { title: "Mathematical Problems", description: "Advanced mathematical challenges to boost your quantitative skills." }
+    ]
+  },
+  communication: {
+    title: "Communication Skills",
+    description: "Improve your writing, speaking, and interpersonal communication through practical exercises.",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"></path></svg>',
+    color: 'text-game-green',
+    bgColor: 'bg-game-green/10',
+    levels: [
+      { title: "Email Composition", description: "Learn to write clear and effective professional emails." },
+      { title: "Public Speaking", description: "Practice delivering impactful presentations and speeches." },
+      { title: "Active Listening", description: "Develop better conversation skills through listening exercises." }
+    ]
+  },
+  coding: {
+    title: "Coding Skills",
+    description: "Build your programming skills from basics to advanced concepts through hands-on challenges.",
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 16 4-4-4-4"></path><path d="m6 8-4 4 4 4"></path><path d="m14.5 4-5 16"></path></svg>',
+    color: 'text-game-purple',
+    bgColor: 'bg-game-purple/10',
+    levels: [
+      { title: "HTML & CSS Basics", description: "Create your first web page using HTML and CSS." },
+      { title: "JavaScript Fundamentals", description: "Learn the basics of JavaScript programming." },
+      { title: "Python Algorithms", description: "Solve algorithmic challenges using Python." }
+    ]
+  }
+};
 
-  {% endblock %}
+// Game state
+let gameState = {
+  aptitude: {
+    levels: [
+      { level: 1, completed: false, locked: false },
+      { level: 2, completed: false, locked: true },
+      { level: 3, completed: false, locked: true }
+    ]
+  },
+  communication: {
+    levels: [
+      { level: 1, completed: false, locked: false },
+      { level: 2, completed: false, locked: true },
+      { level: 3, completed: false, locked: true }
+    ]
+  },
+  coding: {
+    levels: [
+      { level: 1, completed: false, locked: false },
+      { level: 2, completed: false, locked: true },
+      { level: 3, completed: false, locked: true }
+    ]
+  }
+};
+
+function loadGameState() {
+  const savedState = localStorage.getItem('gameState');
+  if (savedState) {
+    try {
+      gameState = JSON.parse(savedState);
+    } catch (error) {
+      console.error('Failed to parse saved game state:', error);
+    }
+  }
+}
+
+function getCurrentCategory() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
+  if (category && categoryData[category]) {
+    return category;
+  }
+  return null;
+}
+
+function renderCategoryPage(category) {
+  document.title = `${categoryData[category].title} - Quest for Skills Arena`;
+
+  const categoryTitle = document.getElementById('category-title');
+  const categoryDescription = document.getElementById('category-description');
+  const categoryIcon = document.getElementById('category-icon');
+
+  categoryTitle.textContent = categoryData[category].title;
+  categoryDescription.textContent = categoryData[category].description;
+  categoryIcon.className = `category-icon ${categoryData[category].bgColor}`;
+  categoryIcon.innerHTML = categoryData[category].icon;
+
+  const iconSVG = categoryIcon.querySelector('svg');
+  if (iconSVG) {
+    iconSVG.classList.add(categoryData[category].color);
+  }
+
+  const levelsContainer = document.getElementById('levels-container');
+  levelsContainer.innerHTML = '';
+
+  gameState[category].levels.forEach((levelState, index) => {
+    const levelData = categoryData[category].levels[index];
+    const levelCard = document.createElement('div');
+    levelCard.className = `card ${levelState.locked ? 'level-locked' : ''} ${levelState.completed ? 'level-completed' : ''}`;
+
+    if (levelState.completed) {
+      const badge = document.createElement('div');
+      badge.className = 'completion-badge';
+      badge.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+      levelCard.appendChild(badge);
+    }
+
+    const title = document.createElement('h3');
+    title.textContent = `Level ${levelState.level}: ${levelData.title}`;
+    const desc = document.createElement('p');
+    desc.textContent = levelData.description;
+    const btn = document.createElement('a');
+    btn.className = 'card-button';
+    btn.href = `/level/${category}/${levelState.level}`;
+    btn.textContent = levelState.completed ? 'Replay Level' : 'Start Level';
+
+    levelCard.appendChild(title);
+    levelCard.appendChild(desc);
+    levelCard.appendChild(btn);
+    levelsContainer.appendChild(levelCard);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  loadGameState();
+  const category = getCurrentCategory();
+  if (!category) {
+    window.location.href = 'game.html';
+    return;
+  }
+  renderCategoryPage(category);
+});
+</script>
+{% endblock %}

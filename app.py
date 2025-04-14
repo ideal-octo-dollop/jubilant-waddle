@@ -155,11 +155,17 @@ def profile():
         ''', (new_name, new_email, new_roll, new_college, new_state, new_phone, user_id))
         conn.commit()
 
-    user = conn.execute('SELECT name, email, rollno, college, state, phone, profile_pic FROM users WHERE id = ?', (user_id,)).fetchone()
+    user = conn.execute(
+        'SELECT name, email, rollno, college, state, phone, profile_pic FROM users WHERE id = ?', 
+        (user_id,)
+    ).fetchone()
     conn.close()
 
     if user:
+        # Ensure profile_pic has a valid image, else load default
         profile_pic = user['profile_pic'] if user['profile_pic'] else 'default.jpg'
+        profile_pic_url = url_for('static', filename=f'uploads/{profile_pic}')  # Assuming your uploaded files are in static/uploads
+
         return render_template('profile.html',
             name=user['name'],
             email=user['email'],
@@ -167,7 +173,7 @@ def profile():
             college=user['college'] or '',
             state=user['state'] or '',
             phone=user['phone'] or '',
-            profile_pic=profile_pic
+            profile_pic=profile_pic_url
         )
     else:
         return "User not found", 404

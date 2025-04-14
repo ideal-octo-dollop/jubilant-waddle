@@ -74,9 +74,12 @@
 <body>
     <div class="container">
         <h2>Edit Profile</h2>
+        <img src="{{ profile_pic }}" alt="Profile Picture" class="profile-pic" style="width:150px;height:150px;border-radius:50%;">
+   
         <form method="POST" action="{{ url_for('profile') }}">
             <label>Name:</label>
             <input type="text" name="name" value="{{ name }}" required>
+
 
             <label>Email:</label>
             <input type="email" name="email" value="{{ email }}" required>
