@@ -14,7 +14,8 @@ CREATE TABLE IF NOT EXISTS users (
     college TEXT NOT NULL,
     rollno INT NOT NULL,
     state TEXT NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    profile_pic TEXT NOT NULL
 )
 ''')
 

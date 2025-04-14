@@ -1,11 +1,20 @@
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session, jsonify
 import sqlite3
-from werkzeug.security import generate_password_hash, check_password_hash  # Include check_password_hash
-import requests 
+from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
+import requests
+import uuid
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_top_secret_key'  # Needed for sessions and flash messages
+
+# Configuration for uploads
+app.config['UPLOAD_FOLDER'] = 'static/uploads'  # Path for saving profile images
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}  # Allowed file extensions for profile images
+
+# Global Functions
 
 def get_db_connection():
     conn = sqlite3.connect('users.db')
@@ -21,10 +30,15 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
 @app.route('/')
 @login_required
 def home():
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -34,7 +48,6 @@ def login():
 
         conn = get_db_connection()
         user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
-        
 
         if user:
             if check_password_hash(user['password'], password):
@@ -43,7 +56,8 @@ def login():
                 flash('You have been logged in, young padawan!', 'success')
                 session['logged_in'] = True
                 session['user_id'] = user['id']
-                return redirect(url_for('home'))
+                next_page = request.args.get('next', url_for('home'))  # Redirect to 'next' page or home
+                return redirect(next_page)
             else:
                 flash('Incorrect password.', 'danger')
         else:
@@ -62,6 +76,7 @@ def dashboard():
         flash('You must log in first.', 'warning')
         return redirect(url_for('login'))
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -73,46 +88,53 @@ def register():
         rollno = request.form['rollno']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
+        profile_pic = request.files['profile_pic']
 
         if password != confirm_password:
             flash("Passwords do not match!", "error")
             return redirect(url_for('register'))
 
         hashed_password = generate_password_hash(password)
+        filename = None
+        if profile_pic and allowed_file(profile_pic.filename):
+            original = secure_filename(profile_pic.filename)
+            unique_name = f"{uuid.uuid4().hex}_{original}"  # prevents name clashes
+            profile_pic.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_name))
+            profile_image_uniq_name = unique_name
 
-        try:
             conn = get_db_connection()
             c = conn.cursor()
-            c.execute("INSERT INTO users (name, email, phone, college, state, rollno, password) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                      (name, email, phone, college, state, rollno, hashed_password))
+            c.execute("INSERT INTO users (name, email, phone, college, state, rollno, password, profile_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                      (name, email, phone, college, state, rollno, hashed_password, profile_image_uniq_name))
             conn.commit()
-            
+            conn.close()
             flash("Registration successful!", "success")
             return redirect(url_for('dashboard'))
-        except sqlite3.IntegrityError:
-            flash("Email already registered.", "error")
-            return redirect(url_for('register'))
 
     return render_template('register.html')
+
 
 @app.route('/learning')
 @login_required
 def learning():
     return render_template('learning.html')
 
+
 @app.route('/challenges')
 @login_required
 def challenges():
     return render_template('challenges.html')
+
 
 @app.route('/leaderboard')
 @login_required
 def leaderboard():
     return render_template('leaderboard.html')
 
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
-    if not session.get('logged_in'):
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
     user_id = session.get('user_id')
@@ -133,17 +155,19 @@ def profile():
         ''', (new_name, new_email, new_roll, new_college, new_state, new_phone, user_id))
         conn.commit()
 
-    user = conn.execute('SELECT name, email, rollno, college, state, phone FROM users WHERE id = ?', (user_id,)).fetchone()
+    user = conn.execute('SELECT name, email, rollno, college, state, phone, profile_pic FROM users WHERE id = ?', (user_id,)).fetchone()
     conn.close()
 
     if user:
+        profile_pic = user['profile_pic'] if user['profile_pic'] else 'default.jpg'
         return render_template('profile.html',
             name=user['name'],
             email=user['email'],
             rollno=user['rollno'] or '',
             college=user['college'] or '',
             state=user['state'] or '',
-            phone=user['phone'] or ''
+            phone=user['phone'] or '',
+            profile_pic=profile_pic
         )
     else:
         return "User not found", 404
@@ -159,6 +183,7 @@ def logout():
 @app.route("/chatbot")
 def chatbot_ui():
     return render_template("chatbot.html")
+
 
 @app.route("/ask", methods=["POST"])
 def ask_phi():
@@ -178,7 +203,7 @@ def ask_phi():
         return jsonify({"error": "Ollama API failed"}), 500
 
 
-
-
 if __name__ == '__main__':
+    if not os.path.exists(app.config['UPLOAD_FOLDER']):
+        os.makedirs(app.config['UPLOAD_FOLDER'])  # Ensure the upload folder exists
     app.run(debug=True)
