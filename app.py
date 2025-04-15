@@ -35,7 +35,7 @@ def allowed_file(filename):
 
 
 @app.route('/')
-@login_required
+
 def home():
     return render_template('index.html')
 
@@ -119,6 +119,10 @@ def register():
 def learning():
     return render_template('learning.html')
 
+@app.route('/game')
+@login_required
+def game():
+    return render_template('game.html')
 
 @app.route('/challenges')
 @login_required
@@ -133,6 +137,7 @@ def leaderboard():
 
 
 @app.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
     if 'user_id' not in session:
         return redirect(url_for('login'))
@@ -180,6 +185,7 @@ def profile():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.clear()
     flash('You have been logged out. Farewell, warrior!', 'info')
@@ -187,11 +193,13 @@ def logout():
 
 
 @app.route("/chatbot")
+@login_required
 def chatbot_ui():
     return render_template("chatbot.html")
 
 
 @app.route("/ask", methods=["POST"])
+@login_required
 def ask_phi():
     user_input = request.json.get("prompt", "")
     payload = {

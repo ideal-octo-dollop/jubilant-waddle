@@ -19,8 +19,21 @@ CREATE TABLE IF NOT EXISTS users (
 )
 ''')
 
+# Create the user_progress table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS user_progress (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    category TEXT NOT NULL,
+    current_level INTEGER DEFAULT 1,
+    current_xp INTEGER DEFAULT 0,
+    last_played DATETIME,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)
+''')
+
 # Commit changes and close the connection
 conn.commit()
 conn.close()
 
-print("✅ Database created and 'users' table initialized.")
+print("✅ Database created and both 'users' and 'user_progress' tables initialized.")
