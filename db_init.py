@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS user_badges (
 );
 ''')
 
-# Create a leaderboard_snapshots table (optional, stores periodic rank info)
+# Create the leaderboard_snapshots table
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS leaderboard_snapshots (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -69,8 +69,36 @@ CREATE TABLE IF NOT EXISTS leaderboard_snapshots (
 );
 ''')
 
-# Commit changes and close the connection
+# Create the quests table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS quests (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    category TEXT NOT NULL,
+    quest_number INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    xp_reward INTEGER DEFAULT 10,
+    level_required INTEGER DEFAULT 1,
+    is_active INTEGER DEFAULT 1
+);
+''')
+
+# Create the user_quest_completion table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS user_quest_completion (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    quest_id INTEGER NOT NULL,
+    completion_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+    status TEXT DEFAULT 'completed',
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (quest_id) REFERENCES quests(id),
+    UNIQUE(user_id, quest_id)
+);
+''')
+
+# Commit and close connection
 conn.commit()
 conn.close()
 
-print("✅ Database created — tables for Users, Progress, Streaks, Badges, and Leaderboard initialized!")
+print("✅ Database created — all tables initialized: Users, Progress, Streaks, Badges, Leaderboard, Quests & Quest Completion!")
