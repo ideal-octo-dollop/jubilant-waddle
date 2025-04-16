@@ -3,89 +3,139 @@
 {% block title %}Home | Bing Chilling{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='dashboard-style.css') }}">
-  
-  <div class="overlay" id="overlay"></div>
-
-  <div class="profile-card-popup" id="profile-card-popup">
-    <div class="profile-card-header">
-      <h3>Profile</h3>
-      <button class="close-btn" id="close-profile-popup">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
-    <div class="profile-card-body">
-      <div class="profile-info">
-        <div class="profile-avatar">
-          <img src="https://randomuser.me/api/portraits/men/42.jpg" alt="Profile Avatar">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flash-messages">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
+          {{ message }}
         </div>
-        <div class="profile-details">
-          <h4 id="profile-name">John Doe</h4>
-          <p id="profile-email">john.doe@example.com</p>
-        </div>
-      </div>
-      <div class="profile-actions">
-        <button class="btn btn-outline" id="edit-profile-btn">Edit Profile</button>
-        <button class="btn btn-outline" id="save-profile-btn" style="display: none;">Save Changes</button>
-        <a href="#" class="btn btn-outline">Settings</a>
-        <a href="#" class="btn btn-outline">Log Out</a>
-      </div>
+      {% endfor %}
     </div>
-  </div>
-
-  <section class="page-header">
+  {% endif %}
+{% endwith %}
+  <section class="page-header" data-aos="fade-down">
     <div class="container">
-      <h1>Welcome Back, Student!</h1>
+      <h1>Welcome, {{ username }}!</h1>
       <p>Track your progress and continue your learning journey</p>
     </div>
   </section>
 
   <section class="dashboard">
-    <div class="container">
-      <div class="stats-grid">
-        <div class="stat-card">
-          <h3>Challenges Completed</h3>
-          <div class="stat-value">26</div>
-          <div class="stat-trend trend-up">
-            <i class="fas fa-arrow-up"></i> 12% from last week
-          </div>
+    <div class="left_side_dash">
+    <div class="stats-grid">
+      <div class="stat-card" data-aos="fade-right" data-aos-delay="100">
+        <div class="stat-icon">
+          <i class="fas fa-trophy"></i>
         </div>
-        <div class="stat-card">
-          <h3>Current Streak</h3>
-          <div class="stat-value">8 days</div>
-          <div class="stat-trend trend-up">
-            <i class="fas fa-arrow-up"></i> 3 days from last week
-          </div>
-        </div>
-        <div class="stat-card">
-          <h3>Points Earned</h3>
-          <div class="stat-value">3,450</div>
-          <div class="stat-trend trend-up">
-            <i class="fas fa-arrow-up"></i> 550 new points
-          </div>
+        <h3>Challenges Completed</h3>
+        <div class="stat-value">26</div>
+        <div class="stat-trend trend-up">
+          <i class="fas fa-arrow-up"></i> 12% from last week
         </div>
       </div>
-      <section class="body-grid">
-        <div class="header">33 submissions in the past one year</div>
-        <div class="months">
-            <span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span>
-            <span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span>
-            <span>Nov</span><span>Dec</span>
+      
+      <div class="stat-card" data-aos="fade-right" data-aos-delay="200">
+        <div class="stat-icon">
+          <i class="fas fa-fire"></i>
         </div>
-        <div class="grid-container" id="activity-grid"></div>
-        <div id="tooltip" class="tooltip"></div>
-        <div class="stats">Total active days: 29 • Max streak: 28</div>
-     </section>   
+        <h3>Current Streak</h3>
+        <div class="stat-value">8 days</div>
+        <div class="stat-trend trend-up">
+          <i class="fas fa-arrow-up"></i> 3 days from last week
+        </div>
+      </div>
+      
+      <div class="stat-card" data-aos="fade-right" data-aos-delay="300">
+        <div class="stat-icon">
+          <i class="fas fa-star"></i>
+        </div>
+        <h3>Points Earned</h3>
+        <div class="stat-value">3,450</div>
+        <div class="stat-trend trend-up">
+          <i class="fas fa-arrow-up"></i> 550 new points
+        </div>
+      </div>
+      
+      <div class="stat-card" data-aos="fade-right" data-aos-delay="400">
+        <div class="stat-icon">
+          <i class="fas fa-award"></i>
+        </div>
+        <h3>Badges Earned</h3>
+        <div class="stat-value">5</div>
+        <div class="stat-trend trend-down">
+          <i class="fas fa-arrow-down"></i> 1 less than last week
+        </div>
+      </div>
+    </div>
+    </div>
+      <div class="container">
+        <section class="contribution-calendar" data-aos="fade-up">
+          <div class="calendar-header">
+            <h2>Your Activity</h2>
+            <div class="calendar-legend">
+              <span>Less</span>
+              <div class="legend-colors">
+                <div class="legend-color" style="background-color: #ebedf0;"></div>
+                <div class="legend-color" style="background-color: #9be9a8;"></div>
+                <div class="legend-color" style="background-color: #40c463;"></div>
+                <div class="legend-color" style="background-color: #30a14e;"></div>
+                <div class="legend-color" style="background-color: #216e39;"></div>
+              </div>
+              <span>More</span>
+            </div>
+          </div>
+          
+          <div class="calendar-body">
+            <div class="calendar-months">
+              <span>Jan</span>
+              <span>Feb</span>
+              <span>Mar</span>
+              <span>Apr</span>
+              <span>May</span>
+              <span>Jun</span>
+              <span>Jul</span>
+              <span>Aug</span>
+              <span>Sep</span>
+              <span>Oct</span>
+              <span>Nov</span>
+              <span>Dec</span>
+            </div>
+            
+            <div class="calendar-grid-container">
+              <div class="calendar-weekdays">
+                <span>Sun</span>
+                <span>Mon</span>
+                <span>Tue</span>
+                <span>Wed</span>
+                <span>Thu</span>
+                <span>Fri</span>
+                <span>Sat</span>
+              </div>
+              
+              <div class="calendar-grid" id="contribution-grid"></div>
+            </div>
+          </div>
+          
+          <div class="calendar-footer">
+            <div class="calendar-tooltip" id="contribution-tooltip"></div>
+            <div class="calendar-stats">
+              <span>Total contributions: <strong>127</strong> in the last year</span>
+              <span>Longest streak: <strong>8 days</strong></span>
+            </div>
+          </div>
+        </section>
+  </div>
+  <div class="center_dash">
       <div class="dashboard-grid">
         <div class="main-content">
-          <div class="recent-activity">
+          <div class="recent-activity" data-aos="fade-up" data-aos-delay="100">
             <div class="section-title">
               <h2>Recent Activity</h2>
               <a href="#" class="btn btn-outline">View All</a>
             </div>
             <div class="activity-list">
-              <div class="activity-item">
+              <div class="activity-item" data-aos="fade-right" data-aos-delay="200">
                 <div class="activity-icon">
                   <i class="fas fa-trophy"></i>
                 </div>
@@ -94,7 +144,7 @@
                   <div class="activity-time">Today, 10:45 AM</div>
                 </div>
               </div>
-              <div class="activity-item">
+              <div class="activity-item" data-aos="fade-right" data-aos-delay="250">
                 <div class="activity-icon">
                   <i class="fas fa-book"></i>
                 </div>
@@ -103,7 +153,7 @@
                   <div class="activity-time">Yesterday, 3:20 PM</div>
                 </div>
               </div>
-              <div class="activity-item">
+              <div class="activity-item" data-aos="fade-right" data-aos-delay="300">
                 <div class="activity-icon">
                   <i class="fas fa-certificate"></i>
                 </div>
@@ -112,7 +162,7 @@
                   <div class="activity-time">2 days ago</div>
                 </div>
               </div>
-              <div class="activity-item">
+              <div class="activity-item" data-aos="fade-right" data-aos-delay="350">
                 <div class="activity-icon">
                   <i class="fas fa-comment"></i>
                 </div>
@@ -124,13 +174,13 @@
             </div>
           </div>
 
-          <div class="recommended-challenges">
+          <div class="recommended-challenges" data-aos="fade-up" data-aos-delay="100">
             <div class="section-title">
               <h2>Recommended Challenges</h2>
               <a href="challenges.html" class="btn btn-outline">View All</a>
             </div>
             <div class="challenge-list">
-              <div class="mini-challenge">
+              <div class="mini-challenge" data-aos="fade-left" data-aos-delay="200">
                 <h3>String Manipulation Basics</h3>
                 <div class="challenge-meta">
                   <span>Easy • 100 Points</span>
@@ -138,7 +188,7 @@
                 </div>
                 <button class="btn btn-primary">Start Challenge</button>
               </div>
-              <div class="mini-challenge">
+              <div class="mini-challenge" data-aos="fade-left" data-aos-delay="250">
                 <h3>CSS Flexbox Layout</h3>
                 <div class="challenge-meta">
                   <span>Medium • 150 Points</span>
@@ -146,7 +196,7 @@
                 </div>
                 <button class="btn btn-primary">Start Challenge</button>
               </div>
-              <div class="mini-challenge">
+              <div class="mini-challenge" data-aos="fade-left" data-aos-delay="300">
                 <h3>Array Sorting Algorithms</h3>
                 <div class="challenge-meta">
                   <span>Hard • 250 Points</span>
@@ -157,69 +207,92 @@
             </div>
           </div>
         </div>
-
         <div class="sidebar">
-          <div class="skills-progress">
+          <div class="skills-progress" data-aos="fade-left" data-aos-delay="100">
             <div class="section-title">
               <h2>Skills Progress</h2>
             </div>
             <div class="skill-list">
-              <div class="skill-item">
+        
+              <!-- Coding Skills -->
+              <div class="skill-item" data-aos="fade-left" data-aos-delay="150">
                 <div class="skill-info">
-                  <div class="skill-name">Technical Skills</div>
-                  <div class="skill-level">Intermediate</div>
+                  <div class="skill-name">Coding Skills</div>
+                  <div class="skill-level">
+                    {% if progress.coding.xp >= 80 %}
+                      Advanced
+                    {% elif progress.coding.xp >= 60 %}
+                      Intermediate
+                    {% elif progress.coding.xp >= 40 %}
+                      Advanced Beginner
+                    {% else %}
+                      Novice
+                    {% endif %}
+                  </div>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress progress-technical" style="width: 65%"></div>
+                  <div class="progress progress-coding" style="width: {{ progress.coding.xp }}%"></div>
                 </div>
               </div>
-              <div class="skill-item">
+        
+              <!-- Communication -->
+              <div class="skill-item" data-aos="fade-left" data-aos-delay="200">
                 <div class="skill-info">
                   <div class="skill-name">Communication</div>
-                  <div class="skill-level">Advanced Beginner</div>
+                  <div class="skill-level">
+                    {% if progress.communication.xp >= 80 %}
+                      Advanced
+                    {% elif progress.communication.xp >= 60 %}
+                      Intermediate
+                    {% elif progress.communication.xp >= 40 %}
+                      Advanced Beginner
+                    {% else %}
+                      Novice
+                    {% endif %}
+                  </div>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress progress-communication" style="width: 45%"></div>
+                  <div class="progress progress-communication" style="width: {{ progress.communication.xp }}%"></div>
                 </div>
               </div>
-              <div class="skill-item">
+        
+              <!-- Aptitude -->
+              <div class="skill-item" data-aos="fade-left" data-aos-delay="250">
                 <div class="skill-info">
-                  <div class="skill-name">Problem Solving</div>
-                  <div class="skill-level">Proficient</div>
+                  <div class="skill-name">Aptitude</div>
+                  <div class="skill-level">
+                    {% if progress.aptitude.xp >= 80 %}
+                      Advanced
+                    {% elif progress.aptitude.xp >= 60 %}
+                      Intermediate
+                    {% elif progress.aptitude.xp >= 40 %}
+                      Advanced Beginner
+                    {% else %}
+                      Novice
+                    {% endif %}
+                  </div>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress progress-mindset" style="width: 78%"></div>
+                  <div class="progress progress-aptitude" style="width: {{ progress.aptitude.xp }}%"></div>
                 </div>
               </div>
-              <div class="skill-item">
-                <div class="skill-info">
-                  <div class="skill-name">JavaScript</div>
-                  <div class="skill-level">Intermediate</div>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress progress-technical" style="width: 68%"></div>
-                </div>
-              </div>
-              <div class="skill-item">
-                <div class="skill-info">
-                  <div class="skill-name">HTML/CSS</div>
-                  <div class="skill-level">Advanced</div>
-                </div>
-                <div class="progress-bar">
-                  <div class="progress progress-technical" style="width: 85%"></div>
-                </div>
-              </div>
+        
             </div>
-            <a href="learning.html" class="btn btn-outline" style="width: 100%; margin-top: 1rem;">View Learning Paths</a>
+        
+            <a href="learning.html" class="btn btn-outline" style="width: 100%; margin-top: 1rem;">
+              View Learning Paths
+            </a>
           </div>
+        </div>
+        
 
-          <div class="leaderboard-preview">
+          <div class="leaderboard-preview" data-aos="fade-left" data-aos-delay="100">
             <div class="section-title">
               <h2>Leaderboard</h2>
               <a href="leaderboard.html" class="btn btn-outline">View All</a>
             </div>
             <div class="leaderboard-list">
-              <div class="leaderboard-item">
+              <div class="leaderboard-item" data-aos="fade-left" data-aos-delay="150">
                 <div class="leaderboard-rank">1</div>
                 <div class="leaderboard-user">
                   <div class="user-avatar">
@@ -229,7 +302,7 @@
                 </div>
                 <div class="leaderboard-score">5,240</div>
               </div>
-              <div class="leaderboard-item">
+              <div class="leaderboard-item" data-aos="fade-left" data-aos-delay="200">
                 <div class="leaderboard-rank">2</div>
                 <div class="leaderboard-user">
                   <div class="user-avatar">
@@ -239,7 +312,7 @@
                 </div>
                 <div class="leaderboard-score">4,870</div>
               </div>
-              <div class="leaderboard-item">
+              <div class="leaderboard-item" data-aos="fade-left" data-aos-delay="250">
                 <div class="leaderboard-rank">3</div>
                 <div class="leaderboard-user">
                   <div class="user-avatar">
@@ -249,7 +322,7 @@
                 </div>
                 <div class="leaderboard-score">4,620</div>
               </div>
-              <div class="leaderboard-item">
+              <div class="leaderboard-item" data-aos="fade-left" data-aos-delay="300">
                 <div class="leaderboard-rank">4</div>
                 <div class="leaderboard-user">
                   <div class="user-avatar">
@@ -259,7 +332,7 @@
                 </div>
                 <div class="leaderboard-score">4,150</div>
               </div>
-              <div class="leaderboard-item active-user">
+              <div class="leaderboard-item active-user" data-aos="fade-left" data-aos-delay="350">
                 <div class="leaderboard-rank">8</div>
                 <div class="leaderboard-user">
                   <div class="user-avatar">
@@ -279,13 +352,13 @@
   <footer>
     <div class="container">
       <div class="footer-content">
-        <div class="footer-section">
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="100">
           <div class="logo">
             <span>Bing Chilling</span>
           </div>
           <p>Empowering students to enhance their technical skills, communication abilities, and mindset through personalized learning.</p>
         </div>
-        <div class="footer-section">
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="150">
           <h4>Platform</h4>
           <ul>
             <li><a href="dashboard.html">Dashboard</a></li>
@@ -294,7 +367,7 @@
             <li><a href="leaderboard.html">Leaderboard</a></li>
           </ul>
         </div>
-        <div class="footer-section">
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="200">
           <h4>Company</h4>
           <ul>
             <li><a href="#">About Us</a></li>
@@ -302,7 +375,7 @@
             <li><a href="#">Blog</a></li>
           </ul>
         </div>
-        <div class="footer-section">
+        <div class="footer-section" data-aos="fade-up" data-aos-delay="250">
           <h4>Legal</h4>
           <ul>
             <li><a href="#">Terms of Service</a></li>
@@ -317,4 +390,188 @@
     </div>
   </footer>
 
-  {% endblock %}
+<script>
+  // Enhanced Intersection Observer with two-way animations
+  document.addEventListener('DOMContentLoaded', () => {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('aos-animate');
+        } else {
+          entry.target.classList.remove('aos-animate');
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    });
+
+    // Observe all animated elements
+    document.querySelectorAll('[data-aos]').forEach(el => {
+      observer.observe(el);
+    });
+
+    // Contribution Calendar Data
+    const contributionData = [
+      // January
+      { date: '2024-01-01', count: 1 }, { date: '2024-01-05', count: 2 }, { date: '2024-01-10', count: 3 },
+      { date: '2024-01-15', count: 4 }, { date: '2024-01-20', count: 1 }, { date: '2024-01-25', count: 2 },
+      { date: '2024-01-30', count: 1 },
+      // February
+      { date: '2024-02-02', count: 1 }, { date: '2024-02-05', count: 2 }, { date: '2024-02-12', count: 1 },
+      { date: '2024-02-18', count: 3 }, { date: '2024-02-22', count: 2 }, { date: '2024-02-28', count: 1 },
+      // March
+      { date: '2024-03-03', count: 4 }, { date: '2024-03-08', count: 3 }, { date: '2024-03-15', count: 2 },
+      { date: '2024-03-22', count: 1 }, { date: '2024-03-27', count: 2 },
+      // April
+      { date: '2024-04-03', count: 4 }, { date: '2024-04-10', count: 2 }, { date: '2024-04-17', count: 1 },
+      { date: '2024-04-24', count: 3 },
+      // May
+      { date: '2024-05-05', count: 3 }, { date: '2024-05-12', count: 2 }, { date: '2024-05-19', count: 1 },
+      { date: '2024-05-26', count: 2 },
+      // June
+      { date: '2024-06-07', count: 4 }, { date: '2024-06-14', count: 2 }, { date: '2024-06-21', count: 1 },
+      // July
+      { date: '2024-07-03', count: 3 }, { date: '2024-07-10', count: 2 }, { date: '2024-07-17', count: 1 },
+      { date: '2024-07-24', count: 4 },
+      // August
+      { date: '2024-08-05', count: 4 }, { date: '2024-08-12', count: 2 }, { date: '2024-08-19', count: 1 },
+      { date: '2024-08-26', count: 3 },
+      // September
+      { date: '2024-09-02', count: 3 }, { date: '2024-09-09', count: 2 }, { date: '2024-09-16', count: 1 },
+      { date: '2024-09-23', count: 2 },
+      // October
+      { date: '2024-10-07', count: 4 }, { date: '2024-10-14', count: 2 }, { date: '2024-10-21', count: 1 },
+      { date: '2024-10-28', count: 3 },
+      // November
+      { date: '2024-11-05', count: 3 }, { date: '2024-11-12', count: 2 }, { date: '2024-11-19', count: 1 },
+      { date: '2024-11-26', count: 2 },
+      // December
+      { date: '2024-12-03', count: 4 }, { date: '2024-12-10', count: 2 }, { date: '2024-12-17', count: 1 },
+      { date: '2024-12-24', count: 3 }, { date: '2024-12-31', count: 1 },
+      // January 2025
+      { date: '2025-01-05', count: 3 }, { date: '2025-01-12', count: 2 }, { date: '2025-01-19', count: 1 },
+      // February 2025
+      { date: '2025-02-02', count: 4 }, { date: '2025-02-09', count: 2 }, { date: '2025-02-16', count: 1 },
+      // March 2025
+      { date: '2025-03-05', count: 3 }, { date: '2025-03-12', count: 2 }, { date: '2025-03-19', count: 1 },
+      // April 2025
+      { date: '2025-04-01', count: 4 }, { date: '2025-04-08', count: 2 }, { date: '2025-04-10', count: 1 }
+    ];
+
+    // Generate the contribution grid
+    const grid = document.getElementById('contribution-grid');
+    const tooltip = document.getElementById('contribution-tooltip');
+    
+    // Get the current date and calculate the start date (1 year ago)
+    const today = new Date();
+    const startDate = new Date();
+    startDate.setFullYear(today.getFullYear() - 1);
+    startDate.setDate(startDate.getDate() + 1); // Start from tomorrow last year
+    
+    // Function to format date as YYYY-MM-DD
+    function formatDate(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const day = String(date.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
+    }
+    
+    // Function to get color based on contribution count
+    function getContributionColor(count) {
+      if (count === 0) return '#ebedf0';
+      if (count === 1) return '#9be9a8';
+      if (count === 2) return '#40c463';
+      if (count === 3) return '#30a14e';
+      return '#216e39';
+    }
+    
+    // Calculate the day of the week for the start date
+    let startDay = startDate.getDay(); // 0 = Sunday, 1 = Monday, etc.
+    
+    // Add empty cells for days before the start date (to align with weekdays)
+    for (let i = 0; i < startDay; i++) {
+      const emptyCell = document.createElement('div');
+      emptyCell.className = 'calendar-cell';
+      emptyCell.style.visibility = 'hidden';
+      grid.appendChild(emptyCell);
+    }
+    
+    // Generate cells for each day in the year
+    const currentDate = new Date(startDate);
+    while (currentDate <= today) {
+      const dateStr = formatDate(currentDate);
+      const contribution = contributionData.find(item => item.date === dateStr);
+      const count = contribution ? contribution.count : 0;
+      
+      const cell = document.createElement('div');
+      cell.className = 'calendar-cell';
+      cell.style.backgroundColor = getContributionColor(count);
+      
+      // Add tooltip on hover with proper date format
+      cell.addEventListener('mouseover', (e) => {
+        const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = currentDate.toLocaleDateString('en-US', dateOptions);
+        tooltip.textContent = `${count} contribution${count !== 1 ? 's' : ''} on ${formattedDate}`;
+        tooltip.style.opacity = 1;
+        tooltip.style.left = `${e.pageX}px`;
+        tooltip.style.top = `${e.pageY - 40}px`;
+      });
+      
+      cell.addEventListener('mouseout', () => {
+        tooltip.style.opacity = 0;
+      });
+      
+      grid.appendChild(cell);
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+    
+    // Adjust month labels to properly align with columns
+    const monthLabels = document.querySelectorAll('.calendar-months span');
+    const monthLabelWidth = 100 / monthLabels.length;
+    
+    monthLabels.forEach((label, index) => {
+      label.style.flex = `0 0 ${monthLabelWidth}%`;
+      label.style.textAlign = 'center';
+    });
+    
+    // Update current year in footer
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+    
+    // Add CSS to ensure proper month alignment
+    const style = document.createElement('style');
+    style.textContent = `
+      .calendar-months {
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        margin-left: 30px;
+      }
+      
+      .calendar-months span {
+        flex: 1;
+        text-align: center;
+        font-size: 0.7rem;
+      }
+      
+      .calendar-grid {
+        display: grid;
+        grid-template-columns: repeat(53, 15px);
+        gap: 3px;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Fade out flash messages
+    setTimeout(() => {
+      const flashMessages = document.querySelectorAll('.flash');
+      flashMessages.forEach(msg => {
+        msg.style.opacity = '0';
+        msg.style.transition = 'opacity 0.5s ease-out';
+        setTimeout(() => msg.remove(), 500);
+      });
+    }, 3000);
+  });
+</script>
+
+{% endblock %}

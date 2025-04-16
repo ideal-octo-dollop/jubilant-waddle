@@ -39,7 +39,6 @@ def allowed_file(filename):
 def home():
     return render_template('index.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -50,14 +49,34 @@ def login():
         user = conn.execute('SELECT * FROM users WHERE email = ?', (email,)).fetchone()
 
         if user:
+            # Check password validity
             if check_password_hash(user['password'], password):
+                # Set session variables for user info
                 session['user_id'] = user['id']
                 session['username'] = user['name']
-                flash('You have been logged in, young padawan!', 'success')
                 session['logged_in'] = True
-                session['user_id'] = user['id']
+
+                # Fetch user progress for each category
+                c = conn.cursor()
+                c.execute('''
+                    SELECT category, current_level, current_xp 
+                    FROM user_progress 
+                    WHERE user_id = ?
+                ''', (user['id'],))
+                progress_data = c.fetchall()
+
+                # Store progress in session in a dictionary
+                session['progress'] = {
+                    row['category']: {
+                        'level': row['current_level'],
+                        'xp': row['current_xp']
+                    } for row in progress_data
+                }
+
+                flash('You have been logged in, young padawan!', 'success')
                 next_page = request.args.get('next', url_for('home'))  # Redirect to 'next' page or home
                 return redirect(next_page)
+
             else:
                 flash('Incorrect password.', 'danger')
         else:
@@ -66,15 +85,35 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    if 'username' in session:
-        return render_template('dashboard.html', username=session['username'])
+    if 'user_id' in session:
+        conn = get_db_connection()
+        c = conn.cursor()
+        c.execute('''
+            SELECT category, current_level, current_xp 
+            FROM user_progress 
+            WHERE user_id = ?
+        ''', (session['user_id'],))
+        progress_data = c.fetchall()
+
+        # Update session's progress for fresh data
+        session['progress'] = {
+            row['category']: {
+                'level': row['current_level'],
+                'xp': row['current_xp']
+            } for row in progress_data
+        }
+
+        print("DEBUG - Progress data:", session['progress'])  # confirm it's working
+
+        return render_template('dashboard.html', username=session['username'], progress=session['progress'])
+    
     else:
         flash('You must log in first.', 'warning')
         return redirect(url_for('login'))
+
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -104,11 +143,28 @@ def register():
 
             conn = get_db_connection()
             c = conn.cursor()
+
+            # Insert user data into 'users' table
             c.execute("INSERT INTO users (name, email, phone, college, state, rollno, password, profile_pic) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                       (name, email, phone, college, state, rollno, hashed_password, profile_image_uniq_name))
+            
+            user_id = c.lastrowid  # Get the ID of the newly created user
+
+            # Insert default progress into 'user_progress' table
+            categories = ['aptitude', 'coding', 'communication']
+            from datetime import datetime
+            now = datetime.now()
+
+            for category in categories:
+                c.execute('''
+                INSERT INTO user_progress (user_id, category, current_level, current_xp, last_played)
+                VALUES (?, ?, ?, ?, ?)
+                ''', (user_id, category, 1, 0, now))
+
             conn.commit()
             conn.close()
-            flash("Registration successful!", "success")
+
+            flash("Registration successful! Progress initialized.", "success")
             return redirect(url_for('dashboard'))
 
     return render_template('register.html')
