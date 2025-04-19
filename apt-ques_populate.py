@@ -32,30 +32,29 @@ def generate_questions(level):
     logging.info(f"⚡ Generating questions for Level ID: {level_id} ({title})...")
 
     prompt = f"""
-You are an expert question setter for aptitude tests.
+You are an expert aptitude question generator.
 
-Generate 5 multiple-choice questions based on the following:
+Your task:
+Generate exactly 1 multiple-choice question for the following level:
+
 - Category: {category}
 - Title: {title}
 - Description: {description}
 - Difficulty: {difficulty}
 
-For each question, give:
-1. Question text
-2. Choices as a list of 4 options.
-3. Correct answer (must match one of the choices).
-4. Explanation.
-
-Output JSON in this format:
+Output format:
 [
     {{
-        "question_text": "...",
+        "question_text": "Write the question here.",
         "choices": ["A", "B", "C", "D"],
-        "correct_answer": "B",
-        "explanation": "..."
+        "correct_answer": "One of the choices",
+        "explanation": "Explain the correct answer clearly."
     }}
 ]
+
+❗Output ONLY valid JSON in the above format. Do not add any extra text or explanation outside the JSON.
 """
+
     try:
         payload = {
             "model": "llama3",
@@ -68,14 +67,25 @@ Output JSON in this format:
         if response.status_code == 200:
             raw_data = response.json().get("response", "").strip()
             logging.info(f"📋 Raw Ollama API response for Level {level_id}: {raw_data}")
-            questions = json.loads(raw_data)
 
-            if isinstance(questions, list) and all("question_text" in q for q in questions):
-                logging.info(f"✅ {len(questions)} questions generated for Level {level_id}.\n")
-                return questions
+            # --- Fix for non-JSON text ---
+            json_start = raw_data.find('[')
+            json_end = raw_data.rfind(']') + 1
+
+            if json_start != -1 and json_end != -1:
+                json_string = raw_data[json_start:json_end]
+                questions = json.loads(json_string)
+
+                if isinstance(questions, list) and all("question_text" in q for q in questions):
+                    logging.info(f"✅ {len(questions)} questions generated for Level {level_id}.\n")
+                    return questions
+                else:
+                    logging.warning(f"⚠️ Invalid question format returned for Level {level_id}. Skipping.")
+                    return []
             else:
-                logging.warning(f"⚠️ Invalid question format returned for Level {level_id}. Skipping.")
+                logging.error(f"❌ JSON not found in response for Level {level_id}: {raw_data}")
                 return []
+
         else:
             logging.error(f"❌ Ollama API failed for Level {level_id}: {response.status_code} - {response.text}")
             return []
