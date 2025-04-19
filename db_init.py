@@ -97,6 +97,21 @@ CREATE TABLE IF NOT EXISTS user_quest_completion (
 );
 ''')
 
+
+# Create the questions table
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS questions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    quest_id INTEGER NOT NULL,
+    question_text TEXT NOT NULL,
+    correct_answer TEXT NOT NULL,
+    choices TEXT,
+    explanation TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (quest_id) REFERENCES quests(id)
+);
+''')
+
 # Commit and close connection
 conn.commit()
 conn.close()

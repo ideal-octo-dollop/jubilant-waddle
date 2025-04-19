@@ -175,10 +175,10 @@ def register():
 def learning():
     return render_template('learning.html')
 
-@app.route('/game')
+@app.route('/aptitude')
 @login_required
-def game():
-    return render_template('game.html')
+def aptitude():
+    return render_template('aptitude.html')
 
 @app.route('/challenges')
 @login_required

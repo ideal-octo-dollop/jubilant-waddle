@@ -6,224 +6,424 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     <div class="flash-messages">
-      {% for challenges, message in messages %}
-        <div class="flash flash-{{ challenges }}">
+      {% for category, message in messages %}
+        <div class="flash flash-{{ category }}">
           {{ message }}
         </div>
       {% endfor %}
     </div>
   {% endif %}
 {% endwith %}
-<link rel="stylesheet" href="{{ url_for('static', filename='game_style.css') }}">
-  <main class="container">
-    <section class="hero">
-      <div class="trophy-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
-      </div>
-      <h1>Quest for Skills Arena</h1>
-      <p>Level up your aptitude, communication, and coding skills through interactive challenges and games.</p>
-    </section>
-
-    <div class="content-grid">
-      <section class="categories">
-        <h2>
-          <span class="icon">✨</span>
-          Categories
-        </h2>
-        
-        <div class="cards">
-          <div class="card challenges-aptitude" data-challenges="aptitude">
-            <h3>Aptitude Skills</h3>
-            <p>Sharpen your logical reasoning, problem-solving, and mathematical skills.</p>
-            <div class="progress-indicator">
-              <span class="progress-text">0/3 completed</span>
-              <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-            </div>
-            <a href="{{ url_for('challenges', challenges='aptitude') }}" class="card-button">
-              <span>Start Game</span>
-            </a>
-          </div>
-          
-          <div class="card challenges-communication" data-challenges="communication">
-            <h3>Communication Skills</h3>
-            <p>Enhance your writing, speaking, and interpersonal communication abilities.</p>
-            <div class="progress-indicator">
-              <span class="progress-text">0/3 completed</span>
-              <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-            </div>
-            <a href="{{ url_for('challenges', challenges='communication') }}" class="card-button">
-              <span>Start Game</span>
-            </a>
-          </div>
-          
-          <div class="card challenges-coding" data-challenges="coding">
-            <h3>Coding Skills</h3>
-            <p>Build your programming skills through interactive coding challenges.</p>
-            <div class="progress-indicator">
-              <span class="progress-text">0/3 completed</span>
-              <div class="progress-bar"><div class="progress" style="width: 0%"></div></div>
-            </div>
-            <a href="{{ url_for('challenges', challenges='coding') }}" class="card-button">
-              <span>Start Game</span>
-            </a>
-          </div>
-        </div>
-      </section>
-      
-      <aside class="progress-summary">
-        <h2>Your Progress</h2>
-        <div class="overall-progress">
-          <div class="progress-item">
-            <div class="progress-challenges">Aptitude</div>
-            <div class="progress-bar"><div class="progress aptitude-progress" style="width: 0%"></div></div>
-            <div class="progress-text">0/3 levels</div>
-          </div>
-          
-          <div class="progress-item">
-            <div class="progress-challenges">Communication</div>
-            <div class="progress-bar"><div class="progress communication-progress" style="width: 0%"></div></div>
-            <div class="progress-text">0/3 levels</div>
-          </div>
-          
-          <div class="progress-item">
-            <div class="progress-challenges">Coding</div>
-            <div class="progress-bar"><div class="progress coding-progress" style="width: 0%"></div></div>
-            <div class="progress-text">0/3 levels</div>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
-
-  <div id="toast" class="toast"></div>
-  <footer data-aos="fade-up">
-    <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <div class="logo">
-            <span>Bing Chilling</span>
-          </div>
-          <p>Empowering students to enhance their technical skills, communication abilities, and mindset through personalized learning.</p>
-        </div>
-        <div class="footer-section">
-          <h4>Platform</h4>
-          <ul>
-            <li><a href="dashboard.html">Dashboard</a></li>
-            <li><a href="learning.html">Learning</a></li>
-            <li><a href="challenges.html">Challenges</a></li>
-            <li><a href="leaderboard.html">Leaderboard</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Blog</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Cookie Policy</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; <span id="current-year"></span> Bing Chillling...!!  All rights reserved.</p>
-      </div>
-    </div>
-  </footer>
-  <script>
-    // Game state
-    let gameState = {
-      aptitude: {
-        levels: [
-          { level: 1, completed: false, locked: false },
-          { level: 2, completed: false, locked: true },
-          { level: 3, completed: false, locked: true }
-        ]
-      },
-      communication: {
-        levels: [
-          { level: 1, completed: false, locked: false },
-          { level: 2, completed: false, locked: true },
-          { level: 3, completed: false, locked: true }
-        ]
-      },
-      coding: {
-        levels: [
-          { level: 1, completed: false, locked: false },
-          { level: 2, completed: false, locked: true },
-          { level: 3, completed: false, locked: true }
-        ]
-      }
-    };
-
-    // Load game state from localStorage
-    function loadGameState() {
-      const savedState = localStorage.getItem('gameState');
-      if (savedState) {
-        try {
-          gameState = JSON.parse(savedState);
-        } catch (error) {
-          console.error('Failed to parse saved game state:', error);
+    <title>Interland Cosmic Triangle</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Google Sans', Arial, sans-serif;
+            background-color: #0a0e17;
+            height: 100vh;
+            overflow: hidden;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
         }
-      }
-      updateProgress();
-    }
 
-    // Save game state to localStorage
-    function saveGameState() {
-      localStorage.setItem('gameState', JSON.stringify(gameState));
-    }
 
-    // Update progress UI
-    function updateProgress() {
-      const categories = ['aptitude', 'communication', 'coding'];
-      
-      categories.forEach(challenges => {
-        const completedLevels = gameState[challenges].levels.filter(level => level.completed).length;
-        const totalLevels = gameState[challenges].levels.length;
-        const progressPercent = (completedLevels / totalLevels) * 100;
-        
-        // Update challenges card progress
-        const card = document.querySelector(`.card.challenges-${challenges}`);
-        if (card) {
-          const progressText = card.querySelector('.progress-text');
-          const progressBar = card.querySelector('.progress');
-          
-          if (progressText) progressText.textContent = `${completedLevels}/${totalLevels} completed`;
-          if (progressBar) progressBar.style.width = `${progressPercent}%`;
+
+        h1 {
+            font-size: 4rem;
+            margin: 0;
+            font-weight: 700;
+            color: #8ab4f8;
+            text-shadow: 0 0 15px rgba(138, 180, 248, 0.7);
+            letter-spacing: 2px;
         }
-        
-        // Update sidebar progress
-        const sidebarProgress = document.querySelector(`.${challenges}-progress`);
-        const sidebarText = document.querySelector(`.progress-item:has(.${challenges}-progress) .progress-text`);
-        
-        if (sidebarProgress) sidebarProgress.style.width = `${progressPercent}%`;
-        if (sidebarText) sidebarText.textContent = `${completedLevels}/${totalLevels} levels`;
-      });
-    }
 
-    // Show toast message
-    function showToast(message, type = 'default') {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.className = 'toast show';
-      if (type === 'success') toast.classList.add('success');
-      if (type === 'error') toast.classList.add('error');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    }
 
-    // Initialize
-    document.addEventListener('DOMContentLoaded', () => {
-      loadGameState();
-    });
-  </script>
+        .triangle-container {
+            position: relative;
+            width: 800px;
+            height: 700px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gif-button {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: absolute;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 0 40px rgba(138, 180, 248, 0.4),
+                        0 25px 50px -12px rgba(0, 0, 0, 0.6),
+                        inset 0 0 40px rgba(255, 255, 255, 0.3);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 3;
+            overflow: hidden;
+            animation: float 8s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        /* Floating world shadow */
+        .gif-button::after {
+            content: '';
+            position: absolute;
+            bottom: -25px;
+            left: 25%;
+            width: 50%;
+            height: 20px;
+            background: radial-gradient(ellipse at center, 
+                                      rgba(138, 180, 248, 0.5) 0%, 
+                                      rgba(0,0,0,0) 80%);
+            border-radius: 50%;
+            filter: blur(12px);
+            transform: rotateX(75deg) scale(0.8);
+            opacity: 0.8;
+            animation: shadow-pulse 8s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        /* World inner glow */
+        .gif-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.1);
+            z-index: 2;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            box-shadow: inset 0 0 50px rgba(255,255,255,0.4);
+        }
+
+        .gif-button:hover {
+            transform: translateY(-15px) scale(1.1);
+            box-shadow: 0 0 60px rgba(138, 180, 248, 0.7),
+                        0 35px 70px -15px rgba(0, 0, 0, 0.8),
+                        inset 0 0 60px rgba(255, 255, 255, 0.5);
+        }
+
+        .gif-button:hover::after {
+            bottom: -35px;
+            opacity: 0.6;
+            filter: blur(15px);
+        }
+
+        /* Triangle positioning */
+        .gif-button:nth-child(1) { /* Top */
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-image: url('https://media.giphy.com/media/l0HU7JI1m1ONWvp8Q/giphy.gif');
+            animation-delay: 0s;
+        }
+
+        .gif-button:nth-child(2) { /* Bottom left */
+            bottom: 20px;
+            left: 20%;
+            background-image: url('https://media.giphy.com/media/3o7TKSjRrfIPjeiVyM/giphy.gif');
+            animation-delay: 0.4s;
+        }
+
+        .gif-button:nth-child(3) {
+    bottom: 20px;
+    right: -5%;
+    background-image: url(https://media.giphy.com/media/3o6Zt6ML6BklcajjsA/giphy.gif);
+    animation-delay: 0.8s;
+}
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @keyframes shadow-pulse {
+            0% { transform: rotateX(75deg) scale(0.8); opacity: 0.8; }
+            50% { transform: rotateX(75deg) scale(1.1); opacity: 0.6; }
+            100% { transform: rotateX(75deg) scale(0.8); opacity: 0.8; }
+        }
+
+        .label {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #8ab4f8;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-shadow: 0 0 10px rgba(138, 180, 248, 0.8);
+            text-align: center;
+        }
+
+        .gif-button:hover .label {
+            opacity: 1;
+        }
+
+        /* Connection lines with moving lights */
+        .connection {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(138, 180, 248, 0.2), 
+                transparent);
+            transform-origin: left center;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .connection::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: 0;
+            right: 0;
+            bottom: -1px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(138, 180, 248, 0.7), 
+                transparent);
+            animation: light-move 3s linear infinite;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #8ab4f8;
+            filter: blur(1px);
+            box-shadow: 0 0 10px 2px rgba(138, 180, 248, 0.8);
+            z-index: 2;
+        }
+
+        @keyframes light-move {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Animated starfield background */
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        .datetime {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #bdc1c6;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        #conn2{
+    width: 487px!important;
+    left: 270px!important;
+    top: 511px!important;
+    transform: rotate(0deg)!important;
+}
+#conn3{
+    width: 358.525px!important;
+    left: 671px!important;
+    top: 511px!important;
+    transform: rotate(-115.0049deg)!important;
+}
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <div class="triangle-container" id="triangleContainer">
+        <!-- Floating worlds -->
+        <div class="gif-button" onclick="window.location.href='{{ url_for('aptitude') }}'">
+
+            <div class="label">Privacy World</div>
+        </div>
+        <div class="gif-button" onclick="window.location.href='security.html'">
+            <div class="label">Security Planet</div>
+        </div>
+        <div class="gif-button" onclick="window.location.href='explore.html'">
+            <div class="label">Explore Universe</div>
+        </div>
+        
+    
+        <div class="connection" id="conn1"></div>
+        <div class="connection" id="conn2"></div>
+        <div class="connection" id="conn3"></div>
+        
+
+        <div class="particle" id="particle1"></div>
+        <div class="particle" id="particle2"></div>
+        <div class="particle" id="particle3"></div>
+        <div class="particle" id="particle4"></div>
+        <div class="particle" id="particle5"></div>
+        <div class="particle" id="particle6"></div>
+    </div>
+
+    <div class="datetime">
+        <span id="time"></span><span id="date"></span>
+    </div>
+
+    <script>
+        // Create starfield
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const count = 300;
+            
+            for (let i = 0; i < count; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                
+                const size = Math.random() * 3;
+                const posX = Math.random() * 100;
+                const posY = Math.random() * 100;
+                const duration = 3 + Math.random() * 10;
+                const delay = Math.random() * 15;
+                
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                star.style.left = `${posX}%`;
+                star.style.top = `${posY}%`;
+                star.style.setProperty('--duration', `${duration}s`);
+                star.style.animationDelay = `${delay}s`;
+                
+                starsContainer.appendChild(star);
+            }
+        }
+
+        // Draw connection lines and position particles
+        function setupConnections() {
+            const container = document.getElementById('triangleContainer');
+            const buttons = document.querySelectorAll('.gif-button');
+            
+            // Get center positions of each button
+            const positions = Array.from(buttons).map(btn => {
+                const rect = btn.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                return {
+                    x: rect.left + rect.width/2 - containerRect.left,
+                    y: rect.top + rect.height/2 - containerRect.top
+                };
+            });
+            
+            // Create lines between points
+            setupLine('conn1', positions[0], positions[1]);
+            setupLine('conn2', positions[1], positions[2]);
+            setupLine('conn3', positions[2], positions[0]);
+            
+            // Setup particles on each line
+            setupParticles('particle1', 'particle2', positions[0], positions[1]);
+            setupParticles('particle3', 'particle4', positions[1], positions[2]);
+            setupParticles('particle5', 'particle6', positions[2], positions[0]);
+            
+            function setupLine(id, start, end) {
+                const line = document.getElementById(id);
+                const length = Math.sqrt(Math.pow(end.x - start.x, 2) + Math.pow(end.y - start.y, 2));
+                const angle = Math.atan2(end.y - start.y, end.x - start.x) * 180 / Math.PI;
+                
+                line.style.width = `${length}px`;
+                line.style.left = `${start.x}px`;
+                line.style.top = `${start.y}px`;
+                line.style.transform = `rotate(${angle}deg)`;
+            }
+            
+            function setupParticles(particleId1, particleId2, start, end) {
+                const particle1 = document.getElementById(particleId1);
+                const particle2 = document.getElementById(particleId2);
+                
+                // Calculate vector between points
+                const dx = end.x - start.x;
+                const dy = end.y - start.y;
+                
+                // Set initial positions
+                particle1.style.left = `${start.x}px`;
+                particle1.style.top = `${start.y}px`;
+                particle2.style.left = `${start.x}px`;
+                particle2.style.top = `${start.y}px`;
+                
+                // Create keyframes for each particle
+                const style1 = document.createElement('style');
+                style1.textContent = `
+                    @keyframes moveParticle${particleId1} {
+                        0% { 
+                            transform: translate(0, 0);
+                            opacity: 0;
+                        }
+                        10% { opacity: 1; }
+                        90% { opacity: 1; }
+                        100% { 
+                            transform: translate(${dx}px, ${dy}px);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                const style2 = document.createElement('style');
+                style2.textContent = `
+                    @keyframes moveParticle${particleId2} {
+                        0% { 
+                            transform: translate(0, 0);
+                            opacity: 0;
+                        }
+                        10% { opacity: 1; }
+                        90% { opacity: 1; }
+                        100% { 
+                            transform: translate(${dx}px, ${dy}px);
+                            opacity: 0;
+                        }
+                    }
+                `;
+                
+                document.head.appendChild(style1);
+                document.head.appendChild(style2);
+                
+                // Apply animations
+                particle1.style.animation = `moveParticle${particleId1} 4s linear infinite`;
+                particle2.style.animation = `moveParticle${particleId2} 4s linear infinite 2s`;
+            }
+        }
+
+        // Initialize everything
+        document.addEventListener('DOMContentLoaded', function() {
+            createStars();
+            setupConnections();
+            updateDateTime();
+            
+            // Update time every minute
+            setInterval(updateDateTime, 60000);
+            
+            // Update connections on resize
+            window.addEventListener('resize', setupConnections);
+        });
+    </script>
+</body>
+
 {% endblock %}
