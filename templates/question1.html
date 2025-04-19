@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Debug View: {{ category }} - {{ level['title'] }}</title>
+    <style>
+        body {
+            font-family: monospace;
+            background: #f4f4f4;
+            padding: 2rem;
+        }
+        .section {
+            background: white;
+            border-left: 5px solid #4CAF50;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        pre {
+            background: #eaeaea;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="section">
+        <h2>Category</h2>
+        <pre>{{ category }}</pre>
+    </div>
+
+    <div class="section">
+        <h2>Level Info</h2>
+        <pre>{{ level | tojson(indent=2) }}</pre>
+    </div>
+
+    <div class="section">
+        <h2>Questions</h2>
+        <pre>{{ questions | tojson(indent=2) }}</pre>
+    </div>
+
+</body>
+</html>

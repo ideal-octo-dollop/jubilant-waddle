@@ -202,22 +202,25 @@ def play_category(category):
         conn.close()
         return redirect(url_for('home'))
 
-    # Get the Level data for this category & level
+    # Convert to format like APT-001
+    level_id = f"APT-{current_level:03d}"
+
+    # Get the Level data
     try:
         level = conn.execute(
-            'SELECT * FROM Level WHERE category = ? AND id = ?',
-            (category, current_level)
+            'SELECT * FROM Level WHERE level_id = ?',
+            (level_id,)
         ).fetchone()
 
         if not level:
-            print(f"No level found for category '{category}' at level {current_level}.")
+            print(f"No level found for level_id '{level_id}'.")
             flash(f"No level found for '{category}' at Level {current_level}.", "danger")
             conn.close()
             return redirect(url_for('home'))
         else:
-            print(f"Level {current_level} data found for category '{category}'.")
+            print(f"Level data found for level_id '{level_id}'.")
     except Exception as e:
-        print(f"Error fetching level data for category '{category}' at level {current_level}: {e}")
+        print(f"Error fetching level data for level_id '{level_id}': {e}")
         flash("There was an error retrieving level data.", "danger")
         conn.close()
         return redirect(url_for('home'))
@@ -226,14 +229,14 @@ def play_category(category):
     try:
         questions = conn.execute(
             'SELECT * FROM Questions WHERE level_id = ?',
-            (level['level_id'],)
+            (level_id,)
         ).fetchall()
 
         if not questions:
-            print(f"No questions found for level {current_level} in category '{category}'.")
+            print(f"No questions found for level_id '{level_id}'.")
             flash("No questions available for this level.", "info")
     except Exception as e:
-        print(f"Error fetching questions for level {current_level} in category '{category}': {e}")
+        print(f"Error fetching questions for level_id '{level_id}': {e}")
         flash("There was an error retrieving questions.", "danger")
         conn.close()
         return redirect(url_for('home'))
@@ -241,13 +244,15 @@ def play_category(category):
     conn.close()
     
     print(f"Rendering learning page for category '{category}', level {current_level}.")
+    level = dict(level)
+    questions = [dict(q) for q in questions]
+
     return render_template(
-        'learning.html', 
+        'question1.html', 
         category=category,
         level=level,
         questions=questions
     )
-
 
 
 
