@@ -169,16 +169,87 @@ def register():
 
     return render_template('register.html')
 
-
-@app.route('/learning')
+@app.route('/play_bef')
 @login_required
-def learning():
+def play_bef():
     return render_template('learning.html')
 
-@app.route('/aptitude')
+
+@app.route('/play/<category>')
 @login_required
-def aptitude():
-    return render_template('aptitude.html')
+def play_category(category):
+    print(f"User {session['user_id']} is attempting to play category: {category}")
+    
+    user_id = session['user_id']
+    conn = get_db_connection()
+
+    # Fetch the user's current progress in the given category
+    try:
+        progress = conn.execute(
+            'SELECT current_level FROM user_progress WHERE user_id = ? AND category = ?',
+            (user_id, category)
+        ).fetchone()
+        
+        if progress is None:
+            print(f"No progress found for user {user_id} in category '{category}'. Defaulting to level 1.")
+            current_level = 1  # Default to level 1 if new
+        else:
+            current_level = progress['current_level']
+            print(f"User {user_id} is at level {current_level} in category '{category}'.")
+    except Exception as e:
+        print(f"Error fetching user progress for {user_id} in category '{category}': {e}")
+        flash("There was an error retrieving your progress.", "danger")
+        conn.close()
+        return redirect(url_for('home'))
+
+    # Get the Level data for this category & level
+    try:
+        level = conn.execute(
+            'SELECT * FROM Level WHERE category = ? AND id = ?',
+            (category, current_level)
+        ).fetchone()
+
+        if not level:
+            print(f"No level found for category '{category}' at level {current_level}.")
+            flash(f"No level found for '{category}' at Level {current_level}.", "danger")
+            conn.close()
+            return redirect(url_for('home'))
+        else:
+            print(f"Level {current_level} data found for category '{category}'.")
+    except Exception as e:
+        print(f"Error fetching level data for category '{category}' at level {current_level}: {e}")
+        flash("There was an error retrieving level data.", "danger")
+        conn.close()
+        return redirect(url_for('home'))
+
+    # Get Questions for this level
+    try:
+        questions = conn.execute(
+            'SELECT * FROM Questions WHERE level_id = ?',
+            (level['level_id'],)
+        ).fetchall()
+
+        if not questions:
+            print(f"No questions found for level {current_level} in category '{category}'.")
+            flash("No questions available for this level.", "info")
+    except Exception as e:
+        print(f"Error fetching questions for level {current_level} in category '{category}': {e}")
+        flash("There was an error retrieving questions.", "danger")
+        conn.close()
+        return redirect(url_for('home'))
+
+    conn.close()
+    
+    print(f"Rendering learning page for category '{category}', level {current_level}.")
+    return render_template(
+        'learning.html', 
+        category=category,
+        level=level,
+        questions=questions
+    )
+
+
+
 
 @app.route('/challenges')
 @login_required
