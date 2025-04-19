@@ -69,48 +69,32 @@ CREATE TABLE IF NOT EXISTS leaderboard_snapshots (
 );
 ''')
 
-# Create the quests table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS quests (
+CREATE TABLE IF NOT EXISTS Level (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     category TEXT NOT NULL,
-    quest_number INTEGER NOT NULL,
+    level_id TEXT UNIQUE NOT NULL,
     title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    xp_reward INTEGER DEFAULT 10,
-    level_required INTEGER DEFAULT 1,
-    is_active INTEGER DEFAULT 1
-);
+    description TEXT,
+    difficulty TEXT,
+    xp INTEGER NOT NULL
+)
 ''')
 
-# Create the user_quest_completion table
+# Create Questions table
 cursor.execute('''
-CREATE TABLE IF NOT EXISTS user_quest_completion (
+CREATE TABLE IF NOT EXISTS Questions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL,
-    quest_id INTEGER NOT NULL,
-    completion_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status TEXT DEFAULT 'completed',
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (quest_id) REFERENCES quests(id),
-    UNIQUE(user_id, quest_id)
-);
-''')
-
-
-# Create the questions table
-cursor.execute('''
-CREATE TABLE IF NOT EXISTS questions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    quest_id INTEGER NOT NULL,
+    level_id TEXT NOT NULL,
     question_text TEXT NOT NULL,
     correct_answer TEXT NOT NULL,
-    choices TEXT,
-    explanation TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (quest_id) REFERENCES quests(id)
-);
+    choices TEXT NOT NULL,
+    explaination TEXT,
+    FOREIGN KEY (level_id) REFERENCES Level(level_id)
+)
 ''')
+
+
 
 # Commit and close connection
 conn.commit()
