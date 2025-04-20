@@ -22,112 +22,116 @@
   </section>
 
   <section class="dashboard">
-    <div class="left_side_dash">
-    <div class="stats-grid">
-      <div class="stat-card" data-aos="fade-right" data-aos-delay="100">
-        <div class="stat-icon">
-          <i class="fas fa-trophy"></i>
-        </div>
-        <h3>Challenges Completed</h3>
-        <div class="stat-value">26</div>
-        <div class="stat-trend trend-up">
-          <i class="fas fa-arrow-up"></i> 12% from last week
-        </div>
-      </div>
-      
-      <div class="stat-card" data-aos="fade-right" data-aos-delay="200">
-        <div class="stat-icon">
-          <i class="fas fa-fire"></i>
-        </div>
-        <h3>Current Streak</h3>
-        <div class="stat-value">8 days</div>
-        <div class="stat-trend trend-up">
-          <i class="fas fa-arrow-up"></i> 3 days from last week
-        </div>
-      </div>
-      
-      <div class="stat-card" data-aos="fade-right" data-aos-delay="300">
-        <div class="stat-icon">
-          <i class="fas fa-star"></i>
-        </div>
-        <h3>Points Earned</h3>
-        <div class="stat-value">3,450</div>
-        <div class="stat-trend trend-up">
-          <i class="fas fa-arrow-up"></i> 550 new points
-        </div>
-      </div>
-      
-      <div class="stat-card" data-aos="fade-right" data-aos-delay="400">
-        <div class="stat-icon">
-          <i class="fas fa-award"></i>
-        </div>
-        <h3>Badges Earned</h3>
-        <div class="stat-value">5</div>
-        <div class="stat-trend trend-down">
-          <i class="fas fa-arrow-down"></i> 1 less than last week
-        </div>
-      </div>
-    </div>
-    </div>
-      <div class="container">
-        <section class="contribution-calendar" data-aos="fade-up">
-          <div class="calendar-header">
-            <h2>Your Activity</h2>
-            <div class="calendar-legend">
-              <span>Less</span>
-              <div class="legend-colors">
-                <div class="legend-color" style="background-color: #ebedf0;"></div>
-                <div class="legend-color" style="background-color: #9be9a8;"></div>
-                <div class="legend-color" style="background-color: #40c463;"></div>
-                <div class="legend-color" style="background-color: #30a14e;"></div>
-                <div class="legend-color" style="background-color: #216e39;"></div>
+    <div class="container">
+      <div class="dashboard-grid">
+        <!-- Left column -->
+        <div class="left-sidebar">
+          <div class="stats-grid">
+            <!-- Your existing stat cards -->
+            <div class="stat-card" data-aos="fade-right" data-aos-delay="100">
+              <div class="stat-icon">
+                <i class="fas fa-trophy"></i>
               </div>
-              <span>More</span>
-            </div>
-          </div>
-          
-          <div class="calendar-body">
-            <div class="calendar-months">
-              <span>Jan</span>
-              <span>Feb</span>
-              <span>Mar</span>
-              <span>Apr</span>
-              <span>May</span>
-              <span>Jun</span>
-              <span>Jul</span>
-              <span>Aug</span>
-              <span>Sep</span>
-              <span>Oct</span>
-              <span>Nov</span>
-              <span>Dec</span>
+              <h3>Challenges Completed</h3>
+              <div class="stat-value">26</div>
+              <div class="stat-trend trend-up">
+                <i class="fas fa-arrow-up"></i> 12% from last week
+              </div>
             </div>
             
-            <div class="calendar-grid-container">
-              <div class="calendar-weekdays">
-                <span>Sun</span>
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
+            <div class="stat-card" data-aos="fade-right" data-aos-delay="200">
+              <div class="stat-icon">
+                <i class="fas fa-fire"></i>
               </div>
-              
-              <div class="calendar-grid" id="contribution-grid"></div>
+              <h3>Current Streak</h3>
+              <div class="stat-value">8 days</div>
+              <div class="stat-trend trend-up">
+                <i class="fas fa-arrow-up"></i> 3 days from last week
+              </div>
+            </div>
+            
+            <div class="stat-card" data-aos="fade-right" data-aos-delay="300">
+              <div class="stat-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <h3>Points Earned</h3>
+              <div class="stat-value">3,450</div>
+              <div class="stat-trend trend-up">
+                <i class="fas fa-arrow-up"></i> 550 new points
+              </div>
+            </div>
+            
+            <div class="stat-card" data-aos="fade-right" data-aos-delay="400">
+              <div class="stat-icon">
+                <i class="fas fa-award"></i>
+              </div>
+              <h3>Badges Earned</h3>
+              <div class="stat-value">5</div>
+              <div class="stat-trend trend-down">
+                <i class="fas fa-arrow-down"></i> 1 less than last week
+              </div>
             </div>
           </div>
           
-          <div class="calendar-footer">
-            <div class="calendar-tooltip" id="contribution-tooltip"></div>
-            <div class="calendar-stats">
-              <span>Total contributions: <strong>127</strong> in the last year</span>
-              <span>Longest streak: <strong>8 days</strong></span>
+          <!-- Contribution calendar -->
+          <section class="contribution-calendar" data-aos="fade-up">
+            <div class="calendar-header">
+              <h2>Your Activity</h2>
+              <div class="calendar-legend">
+                <span>Less</span>
+                <div class="legend-colors">
+                  <div class="legend-color" style="background-color: #ebedf0;"></div>
+                  <div class="legend-color" style="background-color: #9be9a8;"></div>
+                  <div class="legend-color" style="background-color: #40c463;"></div>
+                  <div class="legend-color" style="background-color: #30a14e;"></div>
+                  <div class="legend-color" style="background-color: #216e39;"></div>
+                </div>
+                <span>More</span>
+              </div>
             </div>
-          </div>
-        </section>
-  </div>
-  <div class="center_dash">
-      <div class="dashboard-grid">
+            
+            <div class="calendar-body">
+              <div class="calendar-months">
+                <span>Jan</span>
+                <span>Feb</span>
+                <span>Mar</span>
+                <span>Apr</span>
+                <span>May</span>
+                <span>Jun</span>
+                <span>Jul</span>
+                <span>Aug</span>
+                <span>Sep</span>
+                <span>Oct</span>
+                <span>Nov</span>
+                <span>Dec</span>
+              </div>
+              
+              <div class="calendar-grid-container">
+                <div class="calendar-weekdays">
+                  <span>Sun</span>
+                  <span>Mon</span>
+                  <span>Tue</span>
+                  <span>Wed</span>
+                  <span>Thu</span>
+                  <span>Fri</span>
+                  <span>Sat</span>
+                </div>
+                
+                <div class="calendar-grid" id="contribution-grid"></div>
+              </div>
+            </div>
+            
+            <div class="calendar-footer">
+              <div class="calendar-tooltip" id="contribution-tooltip"></div>
+              <div class="calendar-stats">
+                <span>Total contributions: <strong>127</strong> in the last year</span>
+                <span>Longest streak: <strong>8 days</strong></span>
+              </div>
+            </div>
+          </section>
+        </div>
+        
+        <!-- Middle column - main content -->
         <div class="main-content">
           <div class="recent-activity" data-aos="fade-up" data-aos-delay="100">
             <div class="section-title">
@@ -207,13 +211,14 @@
             </div>
           </div>
         </div>
-        <div class="sidebar">
+        
+        <!-- Right column - sidebar -->
+        <div class="right-sidebar">
           <div class="skills-progress" data-aos="fade-left" data-aos-delay="100">
             <div class="section-title">
               <h2>Skills Progress</h2>
             </div>
             <div class="skill-list">
-        
               <!-- Coding Skills -->
               <div class="skill-item" data-aos="fade-left" data-aos-delay="150">
                 <div class="skill-info">
@@ -276,16 +281,13 @@
                   <div class="progress progress-aptitude" style="width: {{ progress.aptitude.xp }}%"></div>
                 </div>
               </div>
-        
             </div>
         
             <a href="learning.html" class="btn btn-outline" style="width: 100%; margin-top: 1rem;">
               View Learning Paths
             </a>
           </div>
-        </div>
-        
-
+          
           <div class="leaderboard-preview" data-aos="fade-left" data-aos-delay="100">
             <div class="section-title">
               <h2>Leaderboard</h2>
