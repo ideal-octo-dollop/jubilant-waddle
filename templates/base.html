@@ -14,21 +14,23 @@
   <header id="main-header">
     <div class="container">
       <div class="logo">
-        <a href="{{ url_for('home') }}"><span>Bing Chilling</span></a>
+        <a href="{{ url_for('user.home') }}"><span>Bing Chilling</span></a>
       </div>
       <nav>
         <ul class="nav-links">
-          <li><a href="{{ url_for('home') }}">Home</a></li>
-          <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-          <li><a href="{{ url_for('play_bef') }}">Play</a></li>
-          <li><a href="{{ url_for('challenges') }}">Challenges</a></li>
-          <li><a href="{{ url_for('leaderboard') }}">Leaderboard</a></li>
+          <li><a href="{{ url_for('user.home') }}">Home</a></li>
+          <li><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+       
+
+          <li><a href="{{ url_for('learning.play_bef') }}">Play</a></li>
+          <li><a href="{{ url_for('learning.challenges') }}">Challenges</a></li>
+          <li><a href="{{ url_for('learning.leaderboard') }}">Leaderboard</a></li>
           {% if session.get('logged_in') %}
-          <li><a href="{{ url_for('profile') }}">Profile</a></li>
-          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+          <li><a href="{{ url_for('user.profile') }}">Profile</a></li>
+          <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
         {% else %}
-          <li><a href="{{ url_for('login') }}">Login</a></li>
-          <li><a href="{{ url_for('register') }}">Register</a></li>
+          <li><a href="{{ url_for('auth.login') }}">Login</a></li>
+          <li><a href="{{ url_for('auth.register') }}">Register</a></li>
         {% endif %}
         </ul>
       </nav>
@@ -40,7 +42,7 @@
   </header>
 
   {% block content %}
-  <!-- Page-specific content will go here -->
+  
   {% endblock %}
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
