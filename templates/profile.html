@@ -76,7 +76,7 @@
         <h2>Edit Profile</h2>
         <img src="{{ profile_pic }}" alt="Profile Picture" class="profile-pic" style="width:150px;height:150px;border-radius:50%;">
    
-        <form method="POST" action="{{ url_for('profile') }}">
+        <form method="POST" action="{{ url_for('user.profile') }}">
             <label>Name:</label>
             <input type="text" name="name" value="{{ name }}" required>
 
@@ -99,7 +99,7 @@
             <input type="submit" value="Update">
         </form>
         <div class="logout">
-            <a href="{{ url_for('logout') }}">Logout</a>
+            <a href="{{ url_for('auth.logout') }}">Logout</a>
         </div>
     </div>
 </body>
